@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BlockFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter CTC(in lakhs) equal and above to load data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:id="@+id/topTextView"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:inputType="numberDecimal"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/topTextView"
+            android:layout_marginTop="10dp"
+            android:hint="7.5"
+            android:textAlignment="center"
+            android:id="@+id/inputCTC"
+            android:textSize="15sp"
+            android:background="@drawable/edit_text_border"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose branch"
+            android:layout_marginLeft="100dp"
+            android:layout_below="@+id/inputCTC"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"
+            android:id="@+id/middleTextView"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CE"
+            android:layout_marginLeft="100dp"
+            android:layout_below="@+id/middleTextView"
+            android:layout_marginTop="10dp"
+            android:id="@+id/checkBoxCE"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CSE"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_below="@+id/checkBoxCE"
+            android:id="@+id/checkBoxCSE"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EE"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_below="@+id/checkBoxCSE"
+            android:id="@+id/checkBoxEE"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EL"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_below="@+id/checkBoxEE"
+            android:id="@+id/checkBoxEL"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ME"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_below="@+id/checkBoxEL"
+            android:id="@+id/checkBoxME"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IT"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_below="@+id/checkBoxME"
+            android:id="@+id/checkBoxIT"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MCA"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-20dp"
+            android:layout_below="@+id/checkBoxIT"
+            android:id="@+id/checkBoxMCA"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/checkBoxMCA"
+            android:layout_marginTop="20dp"
+            android:id="@+id/nextButton"
+            android:enabled="true"
+            android:backgroundTint="@color/teal_700" />
+
+    </RelativeLayout>
+
+</FrameLayout>

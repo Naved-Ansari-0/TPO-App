@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:id="@+id/parent"
+    android:elevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:contentPadding="5dp"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textRollNo"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textBranch"
+            android:layout_toEndOf="@+id/textRollNo"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold|italic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/candidateCountNo"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textGender"
+            android:layout_below="@+id/textRollNo"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/genderIcon"
+            android:layout_below="@+id/textRollNo"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textName"
+            android:layout_toEndOf="@+id/genderIcon"
+            android:layout_below="@+id/textRollNo"
+            android:layout_marginLeft="0dp"/>
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/phone_icon"
+            android:layout_below="@+id/candidateCountNo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textPhoneNo"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/candidateCountNo"
+            android:textStyle="italic"/>
+
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textPhoneNo"
+            android:src="@drawable/email_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textEmail"
+            android:layout_below="@+id/textPhoneNo"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textStyle="italic"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textPackages"
+            android:layout_below="@+id/textName"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textCompanies"
+            android:layout_toEndOf="@+id/textPackages"
+            android:layout_below="@+id/textName"
+            android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+

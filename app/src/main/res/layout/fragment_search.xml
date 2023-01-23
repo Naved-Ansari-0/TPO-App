@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search for candidate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/black"
+            android:id="@+id/search_topTextView"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/search_topTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:inputType="text"
+            android:id="@+id/searchInputText"
+            android:hint="Enter RollNo/Name/Company"
+            android:textSize="15sp"
+            android:background="@drawable/edit_text_border"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search by"
+            android:textColor="@color/black"
+            android:id="@+id/searchByText"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/searchInputText"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/radioGroup"
+            android:layout_below="@+id/searchByText"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Roll No"
+                android:id="@+id/radioRollNo"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:id="@+id/radioName"
+                android:layout_marginTop="-10dp"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company"
+                android:id="@+id/radioCompany"
+                android:layout_marginTop="-10dp"/>
+
+        </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radioGroup"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/searchButton"
+            android:layout_marginTop="112dp"
+            android:text="Search"
+            android:backgroundTint="@color/teal_700"/>
+
+    </RelativeLayout>
+
+</FrameLayout>
