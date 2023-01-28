@@ -12,13 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
 public class ShowDetails extends AppCompatActivity {
 
     private RecyclerView candidateRecyclerView;
     private ArrayList<Candidate> candidates;
     private TextView candidateCount;
-
 
     @SuppressLint("MissingInflatedId")
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,7 @@ public class ShowDetails extends AppCompatActivity {
         candidates = new ArrayList<>();
 
         try{
-            JSONObject jsonObject = new JSONObject(MainActivity.fetched_data);
+            JSONObject jsonObject = new JSONObject(Home.fetched_data);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             int count = 0;
             if(jsonArray.length()>0){

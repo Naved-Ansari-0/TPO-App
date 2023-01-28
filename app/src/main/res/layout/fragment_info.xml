@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".InfoFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:contentPadding="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="50dp"
+            android:id="@+id/account_cardview"
+            app:cardBackgroundColor="@color/white">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/userImage"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="signed in as"
+                    android:textStyle="italic"
+                    android:layout_toRightOf="@+id/userImage"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/signedInAs"
+                    android:textColor="@color/dark_grey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userName"
+                    android:layout_toRightOf="@+id/userImage"
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/signedInAs"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userEmail"
+                    android:layout_toRightOf="@+id/userImage"
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/userName"/>
+
+                <Button
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/logoutButton"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="logout"
+                    android:textSize="8dp"
+                    android:backgroundTint="@color/blue" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/account_cardview"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="10dp"
+            app:cardBackgroundColor="@color/light_grey"
+            android:layout_marginHorizontal="20dp"
+            android:id="@+id/feedback_cardview">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Feedback"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:id="@+id/feedbackTextView"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/feedbackTextView"
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:background="@drawable/edit_text_border"
+                    android:backgroundTint="@color/white"
+                    android:maxLength="200"
+                    android:id="@+id/feedbackEditText"
+                    android:hint="Enter feedback or tell us about the issue with the information provided in the app."
+                    android:textSize="15sp"
+                    android:textColor="@color/dark_grey"/>
+
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/feedbackEditText"
+                    android:text="Submit"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/blue"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/feedbackButton"
+                    android:textColor="@color/white"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Source code link on GitHub"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/feedback_cardview"
+            android:layout_marginTop="30dp"
+            android:id="@+id/sourceCodeLinkText"/>
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/open_icon"
+            android:layout_toEndOf="@+id/sourceCodeLinkText"
+            android:id="@+id/sourceCodeLinkButton"
+            android:layout_toRightOf="@+id/sourceCodeLinkText"
+            android:layout_below="@+id/feedback_cardview"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/white"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sourceCodeLinkText"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="50dp"
+            android:textSize="15sp"
+            android:id="@+id/note"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="If facing difficulty while fetching data then logout and try to login again."/>
+
+    </RelativeLayout>
+
+</FrameLayout>

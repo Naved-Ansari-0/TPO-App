@@ -5,26 +5,43 @@
     android:layout_height="match_parent"
     tools:context=".StatsFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.github.mikephil.charting.charts.HorizontalBarChart
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/barChart"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="2"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/linear_layout">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/barChart"
-            android:id="@+id/pieChart"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="1"/>
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/barChart"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="2"/>
 
-    </LinearLayout>
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/barChart"
+                android:id="@+id/pieChart"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_layout"
+                android:id="@+id/studentPlaced"
+                android:layout_marginLeft="100dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/studentPlaced"
+                android:id="@+id/packagesOffered"
+                android:layout_marginLeft="100dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
 
 </FrameLayout>

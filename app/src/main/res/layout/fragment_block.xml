@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter CTC(in lakhs) equal and above to load data"
+            android:text="Enter CTC(in lakhs) equal and above to see data"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:id="@+id/topTextView"
@@ -114,7 +114,7 @@
             android:layout_marginTop="20dp"
             android:id="@+id/nextButton"
             android:enabled="true"
-            android:backgroundTint="@color/teal_700" />
+            android:backgroundTint="@color/blue" />
 
     </RelativeLayout>
 

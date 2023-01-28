@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -40,6 +41,8 @@ import java.util.Map;
  */
 public class StatsFragment extends Fragment {
 
+    TextView totalStudentPlaced, totalPackagesOffered;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,7 +53,7 @@ public class StatsFragment extends Fragment {
     private String mParam2;
 
     public StatsFragment() {
-        // Required empty public constructor
+
     }
 
     /**
@@ -89,10 +92,17 @@ public class StatsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        totalStudentPlaced = getView().findViewById(R.id.studentPlaced);
+        totalPackagesOffered = getView().findViewById(R.id.packagesOffered);
+
+        int noOfStudentPlaced = 0;
+        int noOfPackagesOffered = 0;
+
         Map<String,Integer> BranchWiseCount = new HashMap<>();
         Map<String,Integer> CompanyWiseCount = new HashMap<>();
         try {
-            JSONObject jsonObject = new JSONObject(MainActivity.fetched_data);
+            JSONObject jsonObject = new JSONObject(Home.fetched_data);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             if (jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -126,6 +136,7 @@ public class StatsFragment extends Fragment {
             String[] temp = ele.getKey().split(" ", 0);
             CompanyNamesList.add(temp[0]);
             x++;
+            noOfPackagesOffered += ele.getValue();
         }
 
         BarChart barChart = getView().findViewById(R.id.barChart);
@@ -143,6 +154,7 @@ public class StatsFragment extends Fragment {
         barChart.setData(barData);
         barDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
         barDataSet.setValueTextSize(12f);
+        barDataSet.setValueTextColor(Color.BLACK);
 
 //        barChart.setTouchEnabled(false);
         barChart.getLegend().setEnabled(false);
@@ -195,9 +207,13 @@ public class StatsFragment extends Fragment {
 
         PieChart pieChart = getView().findViewById(R.id.pieChart);
         ArrayList <PieEntry> BranchWiseCountList = new ArrayList<>();
-        BranchWiseCount.forEach((k,v) ->
-                BranchWiseCountList.add(new PieEntry(v, k))
-                        );
+//        BranchWiseCount.forEach((k,v) ->
+//                BranchWiseCountList.add(new PieEntry(v, k))
+//                        );
+        for(Map.Entry<String, Integer> ele: BranchWiseCount.entrySet()){
+            BranchWiseCountList.add(new PieEntry(ele.getValue(), ele.getKey()));
+            noOfStudentPlaced += ele.getValue();
+        }
         PieDataSet pieDataSet = new PieDataSet(BranchWiseCountList, "Branch Wise");
         pieDataSet.setValueFormatter(new IntegerFormatter());
         pieDataSet.setDrawValues(true);
@@ -213,8 +229,10 @@ public class StatsFragment extends Fragment {
         pieChart.setCenterTextSize(12f);
         pieChart.setCenterTextColor(Color.GRAY);
         pieChart.animate();
-    }
 
+        totalStudentPlaced.setText("Total Students Placed : " + noOfStudentPlaced);
+        totalPackagesOffered.setText("Total Packages Offered : " + noOfPackagesOffered);
+    }
     public class IntegerFormatter extends ValueFormatter {
         private DecimalFormat mFormat;
 

@@ -81,7 +81,7 @@
             android:id="@+id/searchButton"
             android:layout_marginTop="112dp"
             android:text="Search"
-            android:backgroundTint="@color/teal_700"/>
+            android:backgroundTint="@color/blue"/>
 
     </RelativeLayout>
 

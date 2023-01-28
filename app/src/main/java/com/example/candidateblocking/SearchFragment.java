@@ -20,7 +20,6 @@ import android.widget.RadioButton;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
-
     private RadioButton radioRollNo, radioName, radioCompany;
     private Button searchButton;
     private EditText searchEditText;

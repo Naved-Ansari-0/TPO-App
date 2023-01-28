@@ -27,9 +27,8 @@ public class BlockFragment extends Fragment {
     private TextView inputCTC;
     private CheckBox checkBoxCE, checkBoxCSE, checkBoxEE, checkBoxEL, checkBoxME, checkBoxIT, checkBoxMCA;
     private Button nextButton;
-    static Set<String> selected_branches = new HashSet<>();
-    static float input_ctc;
-
+    public static Set<String> selected_branches = new HashSet<>();
+    public static float input_ctc;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,8 +68,6 @@ public class BlockFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
