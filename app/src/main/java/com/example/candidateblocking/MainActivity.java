@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 
 import com.google.android.gms.tasks.Task;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static String sourceCodeLink = "sourceCodeLink";
     private static String note = "note";
     private boolean moveToHome = false;
-    private Button loginButton;
+    private SignInButton loginButton;
     private ProgressBar verifyProgressBar;
     private TextView verifyText;
 
@@ -71,15 +71,15 @@ public class MainActivity extends AppCompatActivity {
             moveToHome();
         }else if(moveToHome==false && account!=null){
             gsc.signOut();
-            signIn();
+//            signIn();
         }else if(moveToHome==false && account==null){
-            signIn();
+//            signIn();
         }else{
             SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.apply();
-            signIn();
+//            signIn();
         }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             try {
 
                 if(checkConnection()==false){
-                    loginButton.setVisibility(View.VISIBLE);
+//                    loginButton.setVisibility(View.VISIBLE);
                     return;
                 }
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     String hashedID = Hashing.sha256().hashString(salt1 + email + salt2, StandardCharsets.UTF_8).toString();
                     loginButton.setVisibility(View.GONE);
                     verifyProgressBar.setVisibility(View.VISIBLE);
-                    verifyText.setText("Verifying account");
+                    verifyText.setText("Checking credentials");
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, verifyUserID+"?id="+hashedID , new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -149,7 +149,11 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putString(note, Note);
                                 editor.apply();
                                 verifyProgressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getApplicationContext(), "Verification Successful", Toast.LENGTH_SHORT).show();
+                                if(UserType.equals(""))
+                                    Toast.makeText(getApplicationContext(), "User outside of organization found", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(getApplicationContext(), "Credentials found", Toast.LENGTH_SHORT).show();
+                                loginButton.setVisibility(View.VISIBLE);
                                 verifyText.setText("");
                                 moveToHome();
                             } catch (JSONException e) {
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             verifyProgressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), "Verification Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Error : No response", Toast.LENGTH_SHORT).show();
                             loginButton.setVisibility(View.VISIBLE);
                             verifyText.setText("");
                         }

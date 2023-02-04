@@ -83,14 +83,14 @@ public class Home extends AppCompatActivity {
                 fetched_data = response;
                 syncProgressBar.setVisibility(View.INVISIBLE);
                 syncText.setText("");
-                Toast.makeText(getApplicationContext(), "Synced SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Data synced successfully", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 syncProgressBar.setVisibility(View.INVISIBLE);
                 syncText.setText("");
-                Toast.makeText(getApplicationContext(), "ERROR while Syncing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error while syncing data", Toast.LENGTH_SHORT).show();
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext().getApplicationContext());
