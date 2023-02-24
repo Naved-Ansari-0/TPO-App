@@ -6,6 +6,17 @@
     tools:context=".MainActivity"
     android:id="@+id/parent">
 
+    <TextView
+        android:id="@+id/loginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/loginButton"
+        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
+        android:text="To use this app, sign in with google account"
+        />
+
     <com.google.android.gms.common.SignInButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,5 +38,15 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/verifyText"
         android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="50dp"
+        android:text="Note : This app is developed unofficially only for members of CDC KNIT, Sultanpur. Others can also use this app but will only be able to fetch some random data."
+        />
 
 </RelativeLayout>

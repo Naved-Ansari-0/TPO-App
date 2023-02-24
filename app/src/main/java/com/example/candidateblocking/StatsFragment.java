@@ -101,6 +101,9 @@ public class StatsFragment extends Fragment {
 
         Map<String,Integer> BranchWiseCount = new HashMap<>();
         Map<String,Integer> CompanyWiseCount = new HashMap<>();
+        Map<String, Float> BranchWiseHighest = new HashMap<>();
+        Map<String, Float> BranchWiseSum = new HashMap<>();
+        Map<String, Integer> BranchWisePackage = new HashMap<>();
         try {
             JSONObject jsonObject = new JSONObject(Home.fetched_data);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -110,10 +113,28 @@ public class StatsFragment extends Fragment {
                     String branch = jsonObject1.getString("Branch");
                     String companies = jsonObject1.getString("Companies");
                     String companyList[] = companies.split("/", 0);
+                    String packages = jsonObject1.getString("Packages");
+                    String[] packagesList = packages.split("/", 0);
+                    float max = 0;
+                    float sum = 0;
+                    for(String p: packagesList){
+                        String t = p.replace("+", "");
+                        float _package = Float.parseFloat(t);
+                        if(_package>max)
+                            max = _package;
+                        sum += _package;
+                    }
                     if(BranchWiseCount.containsKey(branch)){
                         BranchWiseCount.put(branch, BranchWiseCount.get(branch)+1);
+                        if(max>BranchWiseHighest.get(branch))
+                            BranchWiseHighest.put(branch, max);
+                        BranchWiseSum.put(branch, BranchWiseSum.get(branch)+sum);
+                        BranchWisePackage.put(branch, BranchWisePackage.get(branch)+packagesList.length);
                     }else{
                         BranchWiseCount.put(branch, 1);
+                        BranchWiseHighest.put(branch, max);
+                        BranchWiseSum.put(branch, sum);
+                        BranchWisePackage.put(branch, packagesList.length);
                     }
                     for(int company=0; company<companyList.length; company++){
                         if(CompanyWiseCount.containsKey(companyList[company])){
@@ -131,7 +152,9 @@ public class StatsFragment extends Fragment {
         ArrayList CompanyWiseCountList = new ArrayList<>();
         ArrayList CompanyNamesList = new ArrayList<>();
         int x = 0;
+        System.out.println("\nCompany wise no of placed students");
         for(Map.Entry<String,Integer> ele : CompanyWiseCount.entrySet()){
+            System.out.println(ele.getKey() + " : " + ele.getValue());
             CompanyWiseCountList.add(new BarEntry(x, ele.getValue()));
             String[] temp = ele.getKey().split(" ", 0);
             CompanyNamesList.add(temp[0]);
@@ -210,10 +233,32 @@ public class StatsFragment extends Fragment {
 //        BranchWiseCount.forEach((k,v) ->
 //                BranchWiseCountList.add(new PieEntry(v, k))
 //                        );
+        System.out.println("\nBranch wise no of placed students");
         for(Map.Entry<String, Integer> ele: BranchWiseCount.entrySet()){
+            System.out.println(ele.getKey() + " : " + ele.getValue());
             BranchWiseCountList.add(new PieEntry(ele.getValue(), ele.getKey()));
             noOfStudentPlaced += ele.getValue();
         }
+
+        System.out.println("\nBranch wise highest package (CTC in lpa)");
+        for(Map.Entry<String, Float> ele: BranchWiseHighest.entrySet()){
+            System.out.println(ele.getKey() + " : " + ele.getValue());
+        }
+
+        System.out.println("\nBranch wise average package (CTC in lpa)");
+        for(Map.Entry<String, Float> ele: BranchWiseSum.entrySet()){
+            System.out.println(ele.getKey() + " : " + ele.getValue()/BranchWisePackage.get(ele.getKey()));
+        }
+
+        System.out.println("\nBranch wise no of packages offered");
+        for(Map.Entry<String, Integer> ele: BranchWisePackage.entrySet()){
+            System.out.println(ele.getKey() + " : " + ele.getValue());
+        }
+
+        System.out.println("\nTotal students placed : " + noOfStudentPlaced);
+        System.out.println("Total packages offered : " +  noOfPackagesOffered);
+
+
         PieDataSet pieDataSet = new PieDataSet(BranchWiseCountList, "Branch Wise");
         pieDataSet.setValueFormatter(new IntegerFormatter());
         pieDataSet.setDrawValues(true);

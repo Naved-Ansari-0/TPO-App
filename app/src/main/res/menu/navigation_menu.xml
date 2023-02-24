@@ -13,6 +13,10 @@
         android:icon="@drawable/analytics_icon"
         android:id="@+id/statsIcon"/>
 
+    <item android:title="Admin"
+        android:icon="@drawable/admin_icon"
+        android:id="@+id/adminIcon"/>
+
     <item android:title="Info"
         android:icon="@drawable/about_icon"
         android:id="@+id/aboutIcon"/>

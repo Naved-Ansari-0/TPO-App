@@ -79,7 +79,7 @@
             android:layout_below="@+id/radioGroup"
             android:layout_centerHorizontal="true"
             android:id="@+id/searchButton"
-            android:layout_marginTop="112dp"
+            android:layout_marginTop="127dp"
             android:text="Search"
             android:backgroundTint="@color/blue"/>
 

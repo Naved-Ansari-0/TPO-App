@@ -52,6 +52,9 @@ public class Home extends AppCompatActivity {
                 case R.id.searchIcon:
                     replaceFragment(new SearchFragment());
                     break;
+                case R.id.adminIcon:
+                    replaceFragment(new AdminFragment());
+                    break;
             }
             return true;
         });

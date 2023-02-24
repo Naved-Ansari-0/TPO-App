@@ -49,7 +49,7 @@ public class ShowDetails extends AppCompatActivity {
                             boolean valid_candidate = false;
                             for(String p: packagesList){
                                 String t = p.replace("+", "");
-                                if(Float.parseFloat(t)>=BlockFragment.input_ctc){
+                                if(Float.parseFloat(t)>BlockFragment.input_ctc){
                                     valid_candidate = true;
                                     break;
                                 }

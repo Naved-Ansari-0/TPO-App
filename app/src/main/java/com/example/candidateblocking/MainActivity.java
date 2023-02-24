@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean moveToHome = false;
     private SignInButton loginButton;
     private ProgressBar verifyProgressBar;
-    private TextView verifyText;
+    private TextView verifyText, loginText;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         verifyProgressBar = findViewById(R.id.verifyProgressBar);
         verifyText = findViewById(R.id.verifyText);
+        loginText = findViewById(R.id.loginText);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     String salt2 = "";
                     String hashedID = Hashing.sha256().hashString(salt1 + email + salt2, StandardCharsets.UTF_8).toString();
                     loginButton.setVisibility(View.GONE);
+                    loginText.setVisibility(View.GONE);
                     verifyProgressBar.setVisibility(View.VISIBLE);
                     verifyText.setText("Checking credentials");
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, verifyUserID+"?id="+hashedID , new Response.Listener<String>() {
@@ -149,11 +151,12 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putString(note, Note);
                                 editor.apply();
                                 verifyProgressBar.setVisibility(View.INVISIBLE);
-                                if(UserType.equals(""))
+                                if(UserType.equals("-1"))
                                     Toast.makeText(getApplicationContext(), "User outside of organization found", Toast.LENGTH_SHORT).show();
                                 else
                                     Toast.makeText(getApplicationContext(), "Credentials found", Toast.LENGTH_SHORT).show();
                                 loginButton.setVisibility(View.VISIBLE);
+                                loginText.setVisibility(View.VISIBLE);
                                 verifyText.setText("");
                                 moveToHome();
                             } catch (JSONException e) {
@@ -166,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                             verifyProgressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "Error : No response", Toast.LENGTH_SHORT).show();
                             loginButton.setVisibility(View.VISIBLE);
+                            loginText.setVisibility(View.VISIBLE);
                             verifyText.setText("");
                         }
                     });
