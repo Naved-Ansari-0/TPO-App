@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:id="@+id/placedStudentCardView"
+    android:elevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:contentPadding="5dp"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/textRollNo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/textRollNo"
+            android:layout_marginStart="10dp"
+            android:textStyle="bold|italic"
+            android:id="@+id/textBranch"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textStyle="italic"
+            android:id="@+id/textCountNo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textRollNo"
+            android:id="@+id/textGender"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/textRollNo"
+            android:id="@+id/genderIcon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/genderIcon"
+            android:layout_below="@+id/textRollNo"
+            android:layout_marginStart="0dp"
+            android:id="@+id/textName"/>
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/phone_icon"
+            android:layout_below="@+id/textCountNo"
+            android:id="@+id/phoneIcon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@+id/textCountNo"
+            android:textStyle="italic"
+            android:id="@+id/textPhoneNo"/>
+
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/textPhoneNo"
+            android:src="@drawable/email_icon"
+            android:id="@+id/emailIcon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textPhoneNo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:textStyle="italic"
+            android:id="@+id/textEmail"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textName"
+            android:id="@+id/textPackages"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/textPackages"
+            android:layout_below="@+id/textName"
+            android:layout_marginStart="10dp"
+            android:id="@+id/textCompanies"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+

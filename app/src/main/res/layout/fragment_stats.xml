@@ -5,43 +5,45 @@
     android:layout_height="match_parent"
     tools:context=".StatsFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/linear_layout">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/barChart"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="2"/>
+                android:layout_height="match_parent"
+                android:id="@+id/barChartCompanies"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/barChart"
-                android:id="@+id/pieChart"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"/>
+                android:layout_height="200dp"
+                android:id="@+id/pieChartStudents"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/pieChartOffers"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_layout"
-                android:id="@+id/studentPlaced"
-                android:layout_marginLeft="100dp"
-                android:textColor="@color/black"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="100dp"
+                android:textColor="@color/black"
+                android:id="@+id/highestAveragePackageTextView"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/studentPlaced"
-                android:id="@+id/packagesOffered"
-                android:layout_marginLeft="100dp"
-                android:textColor="@color/black"/>
+            <com.github.mikephil.charting.charts.BarChart
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/barChartPackages"/>
+
         </LinearLayout>
 
+    </ScrollView>
 
 </FrameLayout>

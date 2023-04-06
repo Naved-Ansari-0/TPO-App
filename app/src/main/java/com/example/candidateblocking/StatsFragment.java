@@ -26,9 +26,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +38,7 @@ import java.util.Map;
  */
 public class StatsFragment extends Fragment {
 
-    TextView totalStudentPlaced, totalPackagesOffered;
+    ArrayList <PlacedStudentModel> parsedPlacedStudentList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,7 +50,6 @@ public class StatsFragment extends Fragment {
     private String mParam2;
 
     public StatsFragment() {
-
     }
 
     /**
@@ -93,107 +89,139 @@ public class StatsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        totalStudentPlaced = getView().findViewById(R.id.studentPlaced);
-        totalPackagesOffered = getView().findViewById(R.id.packagesOffered);
+        ParseJsonString parseJsonString = new ParseJsonString(getContext());
+        parsedPlacedStudentList = parseJsonString.getPlacedStudentList();
 
-        int noOfStudentPlaced = 0;
-        int noOfPackagesOffered = 0;
+        Map<String, Integer> companyWisePlacedStudents = new HashMap<>();
+        Map<String, Integer> branchWisePlacedStudents = new HashMap<>();
+        Map<String, Integer> branchWisePackagesOffered = new HashMap<>();
 
-        Map<String,Integer> BranchWiseCount = new HashMap<>();
-        Map<String,Integer> CompanyWiseCount = new HashMap<>();
-        Map<String, Float> BranchWiseHighest = new HashMap<>();
-        Map<String, Float> BranchWiseSum = new HashMap<>();
-        Map<String, Integer> BranchWisePackage = new HashMap<>();
-        try {
-            JSONObject jsonObject = new JSONObject(Home.fetched_data);
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            if (jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                    String branch = jsonObject1.getString("Branch");
-                    String companies = jsonObject1.getString("Companies");
-                    String companyList[] = companies.split("/", 0);
-                    String packages = jsonObject1.getString("Packages");
-                    String[] packagesList = packages.split("/", 0);
-                    float max = 0;
-                    float sum = 0;
-                    for(String p: packagesList){
-                        String t = p.replace("+", "");
-                        float _package = Float.parseFloat(t);
-                        if(_package>max)
-                            max = _package;
-                        sum += _package;
-                    }
-                    if(BranchWiseCount.containsKey(branch)){
-                        BranchWiseCount.put(branch, BranchWiseCount.get(branch)+1);
-                        if(max>BranchWiseHighest.get(branch))
-                            BranchWiseHighest.put(branch, max);
-                        BranchWiseSum.put(branch, BranchWiseSum.get(branch)+sum);
-                        BranchWisePackage.put(branch, BranchWisePackage.get(branch)+packagesList.length);
-                    }else{
-                        BranchWiseCount.put(branch, 1);
-                        BranchWiseHighest.put(branch, max);
-                        BranchWiseSum.put(branch, sum);
-                        BranchWisePackage.put(branch, packagesList.length);
-                    }
-                    for(int company=0; company<companyList.length; company++){
-                        if(CompanyWiseCount.containsKey(companyList[company])){
-                            CompanyWiseCount.put(companyList[company], CompanyWiseCount.get(companyList[company])+1);
-                        }else{
-                            CompanyWiseCount.put(companyList[company], 1);
-                        }
-                    }
-                }
+        Map<String, Float> branchWiseHighestPackage = new HashMap<>();
+        Map<String, Float> branchWisePackagesSum = new HashMap<>();
+        Map<String, Float> branchWiseAveragePackage = new HashMap<>();
+
+        for(int i=0; i<parsedPlacedStudentList.size(); i++){
+            String branch = parsedPlacedStudentList.get(i).getBranch();
+            ArrayList<Float> packages = parsedPlacedStudentList.get(i).getPackages();
+            ArrayList<String> companies = parsedPlacedStudentList.get(i).getCompanies();
+
+            if(branchWisePlacedStudents.containsKey(branch))
+                branchWisePlacedStudents.put(branch, branchWisePlacedStudents.get(branch)+1);
+            else
+                branchWisePlacedStudents.put(branch, 1);
+
+            if(branchWisePackagesOffered.containsKey(branch))
+                branchWisePackagesOffered.put(branch, branchWisePackagesOffered.get(branch)+packages.size());
+            else
+                branchWisePackagesOffered.put(branch, packages.size());
+
+            for(String company: companies){
+                if(companyWisePlacedStudents.containsKey(company))
+                    companyWisePlacedStudents.put(company, companyWisePlacedStudents.get(company)+1);
+                else
+                    companyWisePlacedStudents.put(company, 1);
             }
-        }catch (Exception e){
-            System.out.println(e);
+
+            float highestPackage = (float)0.0;
+            float packagesSum = (float)0.0;
+
+            for(Float packageAmount: packages){
+                if(packageAmount>highestPackage)
+                    highestPackage = packageAmount;
+                packagesSum += packageAmount;
+            }
+
+            if(branchWiseHighestPackage.containsKey(branch)){
+                if(branchWiseHighestPackage.get(branch)<highestPackage)
+                    branchWiseHighestPackage.put(branch, highestPackage);
+            }else
+                branchWiseHighestPackage.put(branch, highestPackage);
+
+            if(branchWisePackagesSum.containsKey(branch))
+                branchWisePackagesSum.put(branch, branchWisePackagesSum.get(branch)+packagesSum);
+            else
+                branchWisePackagesSum.put(branch, packagesSum);
         }
 
-        ArrayList CompanyWiseCountList = new ArrayList<>();
-        ArrayList CompanyNamesList = new ArrayList<>();
-        int x = 0;
-        System.out.println("\nCompany wise no of placed students");
-        for(Map.Entry<String,Integer> ele : CompanyWiseCount.entrySet()){
-            System.out.println(ele.getKey() + " : " + ele.getValue());
-            CompanyWiseCountList.add(new BarEntry(x, ele.getValue()));
-            String[] temp = ele.getKey().split(" ", 0);
-            CompanyNamesList.add(temp[0]);
-            x++;
-            noOfPackagesOffered += ele.getValue();
+        for(Map.Entry<String, Float> ele: branchWisePackagesSum.entrySet()){
+            branchWiseAveragePackage.put(ele.getKey(), ele.getValue()/branchWisePackagesOffered.get(ele.getKey()));
         }
 
-        BarChart barChart = getView().findViewById(R.id.barChart);
 
-        barChart.setDescription(null);
-        barChart.setPinchZoom(false);
-        barChart.setScaleEnabled(false);
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawGridBackground(false);
+//        --------------------------------------------------------------------------
 
-        BarDataSet barDataSet = new BarDataSet(CompanyWiseCountList, "Company Wise");
-        BarData barData = new BarData(barDataSet);
+        ArrayList companiesList = new ArrayList<>();
+        ArrayList companyWisePlacedStudentsList = new ArrayList<>();
+        int position = 0;
+        for(Map.Entry<String,Integer> ele : companyWisePlacedStudents.entrySet()){
+            companyWisePlacedStudentsList.add(new BarEntry(position, ele.getValue()));
+            String[] companyName = ele.getKey().split(" ", 0);
+            companiesList.add(companyName[0]);
+            position++;
+        }
 
-        barData.setValueFormatter(new IntegerFormatter());
-        barChart.setData(barData);
+        ArrayList <PieEntry> branchWisePlacedStudentsList = new ArrayList<>();
+        ArrayList <PieEntry> branchWisePackagesOfferedList = new ArrayList<>();
+        for(Map.Entry<String, Integer> ele: branchWisePlacedStudents.entrySet()){
+            branchWisePlacedStudentsList.add(new PieEntry(ele.getValue(), ele.getKey()));
+        }
+        for(Map.Entry<String, Integer> ele: branchWisePackagesOffered.entrySet()){
+            branchWisePackagesOfferedList.add(new PieEntry(ele.getValue(), ele.getKey()));
+        }
+
+        ArrayList branches = new ArrayList();
+        ArrayList branchWiseHighestPackageList = new ArrayList<>();
+        ArrayList branchWiseAveragePackageList = new ArrayList<>();
+        position = 0;
+        for(Map.Entry<String, Float> ele: branchWiseHighestPackage.entrySet()){
+            branches.add(ele.getKey());
+            branchWiseHighestPackageList.add(new BarEntry(position, ele.getValue()));
+            position++;
+        }
+        position = 0;
+        for(Map.Entry<String, Float> ele: branchWiseAveragePackage.entrySet()){
+            branchWiseAveragePackageList.add(new BarEntry(position, ele.getValue()));
+            position++;
+        }
+
+
+//        ----------------------------------------------------------------------------------
+
+        BarDataSet barDataSet = new BarDataSet(companyWisePlacedStudentsList, "Company Wise Placed Students");
         barDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
         barDataSet.setValueTextSize(12f);
         barDataSet.setValueTextColor(Color.BLACK);
-
-//        barChart.setTouchEnabled(false);
-        barChart.getLegend().setEnabled(false);
-//        barChart.getAxisRight().setDrawGridLines(false);
-//        barChart.getAxisRight().setDrawAxisLine(false);
-//        barChart.getAxisRight().setDrawLabels(false);
-        barChart.getAxisLeft().setDrawGridLines(false);
-        barChart.getAxisLeft().setDrawAxisLine(false);
-        barChart.getAxisLeft().setDrawLabels(false);
-//        barChart.getXAxis().setDrawGridLines(false);
-        barChart.getXAxis().setDrawAxisLine(false);
-//        barChart.getXAxis().setDrawLabels(false);
-//        barChart.animate();
+        BarData barData = new BarData(barDataSet);
+        barData.setValueFormatter(new IntegerFormatter());
+//        barData.setBarWidth(1f);
 
 
-//        Legend l = barChart.getLegend();
+        BarChart barChartCompanies = getView().findViewById(R.id.barChartCompanies);
+        int barChartHeight = companiesList.size()*90;
+        barChartCompanies.setMinimumHeight(barChartHeight);
+        barChartCompanies.setData(barData);
+        barChartCompanies.setDescription(null);
+        barChartCompanies.setPinchZoom(false);
+        barChartCompanies.setScaleEnabled(false);
+        barChartCompanies.setDrawBarShadow(false);
+        barChartCompanies.setDrawGridBackground(false);
+
+
+
+//        barChartCompanies.setTouchEnabled(false);
+//        barChartCompanies.getLegend().setEnabled(false);
+//        barChartCompanies.getAxisRight().setDrawGridLines(false);
+//        barChartCompanies.getAxisRight().setDrawAxisLine(false);
+//        barChartCompanies.getAxisRight().setDrawLabels(false);
+        barChartCompanies.getAxisLeft().setDrawGridLines(false);
+        barChartCompanies.getAxisLeft().setDrawAxisLine(false);
+        barChartCompanies.getAxisLeft().setDrawLabels(false);
+//        barChartCompanies.getXAxis().setDrawGridLines(false);
+        barChartCompanies.getXAxis().setDrawAxisLine(false);
+//        barChartCompanies.getXAxis().setDrawLabels(false);
+//        barChartCompanies.animate();
+
+//        Legend l = barChartCompanies.getLegend();
 //        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
 //        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
 //        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -203,97 +231,181 @@ public class StatsFragment extends Fragment {
 //        l.setYEntrySpace(0f);
 //        l.setTextSize(8f);
 
-        XAxis xAxis = barChart.getXAxis();
+        XAxis xAxis = barChartCompanies.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(CompanyNamesList.size());
-        xAxis.setAxisMaximum(CompanyNamesList.size());
+        xAxis.setLabelCount(companiesList.size());
+        xAxis.setAxisMaximum(companiesList.size());
         xAxis.setAxisMinimum(0);
         xAxis.setTextSize(10f);
-        barChart.setFitBars(true);
-
+        barChartCompanies.setFitBars(true);
+        xAxis.setAxisMinimum(-0.5f);
 
         xAxis.setDrawGridLines(false);
-        xAxis.setAxisMaximum(CompanyNamesList.size());
+        xAxis.setAxisMaximum(companiesList.size());
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(CompanyNamesList));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(companiesList));
 
-        barChart.getAxisRight().setEnabled(false);
-        YAxis leftAxis = barChart.getAxisLeft();
+        barChartCompanies.getAxisRight().setEnabled(false);
+        YAxis leftAxis = barChartCompanies.getAxisLeft();
 //        leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
 //        leftAxis.setSpaceTop(35f);
         leftAxis.setAxisMinimum(0f);
 
 
-
-        PieChart pieChart = getView().findViewById(R.id.pieChart);
-        ArrayList <PieEntry> BranchWiseCountList = new ArrayList<>();
-//        BranchWiseCount.forEach((k,v) ->
-//                BranchWiseCountList.add(new PieEntry(v, k))
-//                        );
-        System.out.println("\nBranch wise no of placed students");
-        for(Map.Entry<String, Integer> ele: BranchWiseCount.entrySet()){
-            System.out.println(ele.getKey() + " : " + ele.getValue());
-            BranchWiseCountList.add(new PieEntry(ele.getValue(), ele.getKey()));
-            noOfStudentPlaced += ele.getValue();
-        }
-
-        System.out.println("\nBranch wise highest package (CTC in lpa)");
-        for(Map.Entry<String, Float> ele: BranchWiseHighest.entrySet()){
-            System.out.println(ele.getKey() + " : " + ele.getValue());
-        }
-
-        System.out.println("\nBranch wise average package (CTC in lpa)");
-        for(Map.Entry<String, Float> ele: BranchWiseSum.entrySet()){
-            System.out.println(ele.getKey() + " : " + ele.getValue()/BranchWisePackage.get(ele.getKey()));
-        }
-
-        System.out.println("\nBranch wise no of packages offered");
-        for(Map.Entry<String, Integer> ele: BranchWisePackage.entrySet()){
-            System.out.println(ele.getKey() + " : " + ele.getValue());
-        }
-
-        System.out.println("\nTotal students placed : " + noOfStudentPlaced);
-        System.out.println("Total packages offered : " +  noOfPackagesOffered);
+//        ------------------------------------------------------------------------------
 
 
-        PieDataSet pieDataSet = new PieDataSet(BranchWiseCountList, "Branch Wise");
-        pieDataSet.setValueFormatter(new IntegerFormatter());
-        pieDataSet.setDrawValues(true);
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieDataSet.setValueTextColor(Color.WHITE);
-        pieDataSet.setValueTextSize(12f);
-        pieChart.setEntryLabelTextSize(12f);
-        PieData pieData = new PieData(pieDataSet);
-        pieChart.setData(pieData);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.getLegend().setEnabled(false);
-        pieChart.setCenterText("Branch Wise");
-        pieChart.setCenterTextSize(12f);
-        pieChart.setCenterTextColor(Color.GRAY);
-        pieChart.animate();
+        PieDataSet pieDataSetStudents = new PieDataSet(branchWisePlacedStudentsList, "Branch Wise Students Placed");
+        PieData pieDataStudents = new PieData(pieDataSetStudents);
 
-        totalStudentPlaced.setText("Total Students Placed : " + noOfStudentPlaced);
-        totalPackagesOffered.setText("Total Packages Offered : " + noOfPackagesOffered);
+        PieChart pieChartStudents = getView().findViewById(R.id.pieChartStudents);
+        pieChartStudents.setData(pieDataStudents);
+        pieDataSetStudents.setValueFormatter(new IntegerFormatter());
+        pieDataSetStudents.setDrawValues(true);
+        pieDataSetStudents.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSetStudents.setValueTextColor(Color.WHITE);
+        pieDataSetStudents.setValueTextSize(12f);
+        pieChartStudents.setEntryLabelTextSize(12f);
+        pieChartStudents.getDescription().setEnabled(false);
+        pieChartStudents.getLegend().setEnabled(false);
+        pieChartStudents.setCenterText("Branch Wise Students Placed");
+        pieChartStudents.setCenterTextSize(12f);
+        pieChartStudents.setCenterTextColor(Color.GRAY);
+        pieChartStudents.animate();
+
+//        ------------------------------------------------------------------------------
+
+        PieDataSet pieDataSetOffers = new PieDataSet(branchWisePackagesOfferedList, "Branch Wise Packages Offered");
+        PieData pieDataOffers = new PieData(pieDataSetOffers);
+
+        PieChart pieChartOffers = getView().findViewById(R.id.pieChartOffers);
+        pieChartOffers.setData(pieDataOffers);
+        pieDataSetOffers.setValueFormatter(new IntegerFormatter());
+        pieDataSetOffers.setDrawValues(true);
+        pieDataSetOffers.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSetOffers.setValueTextColor(Color.WHITE);
+        pieDataSetOffers.setValueTextSize(12f);
+        pieChartOffers.setEntryLabelTextSize(12f);
+        pieChartOffers.getDescription().setEnabled(false);
+        pieChartOffers.getLegend().setEnabled(false);
+        pieChartOffers.setCenterText("Branch Wise Packages Offered");
+        pieChartOffers.setCenterTextSize(12f);
+        pieChartOffers.setCenterTextColor(Color.GRAY);
+        pieChartOffers.animate();
+
+
+
+        showDetailedStats(branchWiseHighestPackage, branchWiseAveragePackage);
+
+//        ------------------------------------------------------------------------------
+
+        /*
+
+        BarDataSet highestPackageDataSet = new BarDataSet(branchWiseHighestPackageList, "Highest Package");
+        highestPackageDataSet.setColor(Color.RED);
+        highestPackageDataSet.setValueTextSize(12f);
+        highestPackageDataSet.setValueTextColor(Color.BLACK);
+
+        BarDataSet averagePackageDataSet = new BarDataSet(branchWiseAveragePackageList, "Average Package");
+        averagePackageDataSet.setColor(Color.BLUE);
+        averagePackageDataSet.setValueTextSize(12f);
+        averagePackageDataSet.setValueTextColor(Color.BLACK);
+
+        barData = new BarData(highestPackageDataSet, averagePackageDataSet);
+//        barData.setValueFormatter(new IntegerFormatter());
+        barData.setBarWidth(0.5f);
+
+
+        BarChart  barChartPackages = getView().findViewById(R.id.barChartPackages);
+//        int barChartWidth = branches.size();
+//        barChartPackages.setMinimumWidth(barChartWidth);
+        barChartPackages.setData(barData);
+        barChartPackages.setDescription(null);
+        barChartPackages.setPinchZoom(false);
+        barChartPackages.setScaleEnabled(false);
+        barChartPackages.setDrawBarShadow(false);
+        barChartPackages.setDrawGridBackground(false);
+
+
+
+//        barChartPackages.setTouchEnabled(false);
+//        barChartPackages.getLegend().setEnabled(false);
+//        barChartPackages.getAxisRight().setDrawGridLines(false);
+//        barChartPackages.getAxisRight().setDrawAxisLine(false);
+//        barChartPackages.getAxisRight().setDrawLabels(false);
+        barChartPackages.getAxisLeft().setDrawGridLines(false);
+        barChartPackages.getAxisLeft().setDrawAxisLine(false);
+        barChartPackages.getAxisLeft().setDrawLabels(false);
+//        barChartPackages.getXAxis().setDrawGridLines(false);
+        barChartPackages.getXAxis().setDrawAxisLine(false);
+//        barChartPackages.getXAxis().setDrawLabels(false);
+//        barChartPackages.animate();
+
+//        Legend l = barChartPackages.getLegend();
+//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+//        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+//        l.setDrawInside(true);
+//        l.setYOffset(20f);
+//        l.setXOffset(0f);
+//        l.setYEntrySpace(0f);
+//        l.setTextSize(8f);
+
+        xAxis = barChartPackages.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setLabelCount(companiesList.size());
+        xAxis.setAxisMaximum(companiesList.size());
+        xAxis.setAxisMinimum(0);
+        xAxis.setTextSize(10f);
+        barChartPackages.setFitBars(true);
+        xAxis.setAxisMinimum(-0.5f);
+        barChartPackages.groupBars(0, 0f, 0f);
+
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisMaximum(companiesList.size());
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(branches));
+
+        barChartPackages.getAxisRight().setEnabled(false);
+        leftAxis = barChartCompanies.getAxisLeft();
+//        leftAxis.setValueFormatter(new LargeValueFormatter());
+        leftAxis.setDrawGridLines(false);
+//        leftAxis.setSpaceTop(35f);
+        leftAxis.setAxisMinimum(0f);
+
+        */
+
     }
     public class IntegerFormatter extends ValueFormatter {
         private DecimalFormat mFormat;
-
         public IntegerFormatter() {
             mFormat = new DecimalFormat("###,##0");
         }
-
         @Override
         public String getBarLabel(BarEntry barEntry) {
             return mFormat.format(barEntry.getY());
         }
-
         @Override
         public String getFormattedValue(float value) {
             return "" + ((int) value);
         }
+    }
+
+    private void showDetailedStats(Map<String, Float> branchWiseHighestPackage, Map<String, Float> branchWiseAveragePackage){
+        String str = "";
+        for(Map.Entry<String, Float> ele: branchWiseHighestPackage.entrySet()){
+            str += "Branch : " + ele.getKey() + "\n" +
+                    "Highest Package : " + ele.getValue() + " lpa\n" +
+                    "Average Package : " +  String.format("%.2f",branchWiseAveragePackage.get(ele.getKey())) + " lpa\n\n";
+        }
+        TextView textView = getView().findViewById(R.id.highestAveragePackageTextView);
+        textView.setText(str);
     }
 
 }

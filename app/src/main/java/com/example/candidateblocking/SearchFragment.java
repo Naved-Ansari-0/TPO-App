@@ -20,11 +20,9 @@ import android.widget.RadioButton;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
-    private RadioButton radioRollNo, radioName, radioCompany;
-    private Button searchButton;
-    private EditText searchEditText;
-    public static String searchInputType;
-    public static String input_search;
+    private RadioButton rollNoRadioButton, nameRadioButton, companyRadioButton;
+    private Button searchStudentByButton;
+    private EditText searchStudentEditText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,28 +76,35 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        radioName = getView().findViewById(R.id.radioName);
-        radioRollNo = getView().findViewById(R.id.radioRollNo);
-        radioCompany = getView().findViewById(R.id.radioCompany);
-        searchButton = getView().findViewById(R.id.searchButton);
-        searchEditText = getView().findViewById(R.id.searchInputText);
+        searchStudentEditText = getView().findViewById(R.id.searchStudentEditText);
+        rollNoRadioButton = getView().findViewById(R.id.rollNoRadioButton);
+        nameRadioButton = getView().findViewById(R.id.nameRadioButton);
+        companyRadioButton = getView().findViewById(R.id.companyRadioButton);
+        searchStudentByButton = getView().findViewById(R.id.searchStudentByButton);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchStudentByButton.setOnClickListener(new View.OnClickListener() {
+
+            String searchValue, searchType;
             @Override
             public void onClick(View view) {
-                input_search = searchEditText.getText().toString();
-                if(input_search.equals(""))
+                searchValue = searchStudentEditText.getText().toString();
+                if(searchValue.equals(""))
                     return;
-                if(radioRollNo.isChecked()){
-                    searchInputType = "RollNo";
-                }else if(radioName.isChecked()){
-                    searchInputType = "Name";
-                }else if(radioCompany.isChecked()){
-                    searchInputType = "Companies";
+                if(rollNoRadioButton.isChecked()){
+                    searchType = "RollNo";
+                }else if(nameRadioButton.isChecked()){
+                    searchType = "Name";
+                }else if(companyRadioButton.isChecked()){
+                    searchType = "Company";
                 }else{
                     return;
                 }
-                Intent intent = new Intent(getActivity().getApplicationContext(), ShowDetails.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ShowPlacedStudentsDetails.class);
+                Bundle extras = new Bundle();
+                extras.putString("FROM_FRAGMENT", "SearchFragment");
+                extras.putString("searchType", searchType);
+                extras.putString("searchValue", searchValue);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });

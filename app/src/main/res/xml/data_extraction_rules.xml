@@ -11,7 +11,7 @@
         -->
     </cloud-backup>
     <!--
-    <device-transfer>
+    <device-transfer>z
         <include .../>
         <exclude .../>
     </device-transfer>

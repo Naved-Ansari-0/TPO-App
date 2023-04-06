@@ -12,76 +12,78 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search for candidate"
+            android:text="Search for student(s)"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:textColor="@color/black"
-            android:id="@+id/search_topTextView"/>
+            android:textStyle="bold"
+            android:id="@+id/searchStudentTextView"/>
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_below="@+id/search_topTextView"
+            android:layout_height="35dp"
+            android:layout_below="@+id/searchStudentTextView"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="10dp"
             android:textAlignment="center"
             android:inputType="text"
-            android:id="@+id/searchInputText"
             android:hint="Enter RollNo/Name/Company"
             android:textSize="15sp"
-            android:background="@drawable/edit_text_border"/>
+            android:background="@drawable/edit_text_border"
+            android:id="@+id/searchStudentEditText"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Search by"
             android:textColor="@color/black"
-            android:id="@+id/searchByText"
-            android:layout_marginLeft="100dp"
+            android:textStyle="bold"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="30dp"
-            android:layout_below="@+id/searchInputText"/>
+            android:layout_below="@+id/searchStudentEditText"
+            android:id="@+id/searchStudentByTextView"/>
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/radioGroup"
-            android:layout_below="@+id/searchByText"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="10dp">
+            android:layout_below="@+id/searchStudentByTextView"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/searchStudentByRadioGroup">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Roll No"
-                android:id="@+id/radioRollNo"/>
+                android:id="@+id/rollNoRadioButton"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:id="@+id/radioName"
-                android:layout_marginTop="-10dp"/>
+                android:layout_marginTop="-10dp"
+                android:id="@+id/nameRadioButton"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Company"
-                android:id="@+id/radioCompany"
-                android:layout_marginTop="-10dp"/>
+                android:layout_marginTop="-10dp"
+                android:id="@+id/companyRadioButton"/>
 
         </RadioGroup>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/radioGroup"
+            android:layout_below="@+id/searchStudentByRadioGroup"
             android:layout_centerHorizontal="true"
-            android:id="@+id/searchButton"
-            android:layout_marginTop="127dp"
+            android:layout_marginTop="50dp"
             android:text="Search"
-            android:backgroundTint="@color/blue"/>
+            android:backgroundTint="@color/blue"
+            android:id="@+id/searchStudentByButton"/>
 
     </RelativeLayout>
 
