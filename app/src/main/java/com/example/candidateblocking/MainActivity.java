@@ -1,6 +1,5 @@
 package com.example.candidateblocking;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,14 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -27,13 +26,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.json.JSONException;
@@ -41,29 +37,31 @@ import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 1;
-    private static final String TAG = "GOOGLEAUTH";
-    private GoogleSignInClient gsc;
-    private GoogleSignInOptions gso;
     private FirebaseAuth firebaseAuth;
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
+    private GoogleSignInAccount account;
+    private static final int RC_SIGN_IN = 1;
     private SignInButton signInButton;
+    private Button privacyPolicy;
     private ProgressDialog progressDialog;
     private static String verifyUserID = "";
-    private boolean moveToHome = false;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         signInButton = findViewById(R.id.signInButton);
+        privacyPolicy = findViewById(R.id.privacyPolicy);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Authenticating");
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -71,43 +69,22 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(this, gso);
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        checkLogin();
-
-        if(moveToHome==true && account!=null) {
+        if(account!=null)
             moveToHome();
-        }else if(moveToHome==false && account!=null){
-            gsc.signOut();
-            signIn();
-        }else if(moveToHome==false && account==null){
-            signIn();
-        }else{
-            SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.apply();
-            signIn();
-        }
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gsc.signOut();
-                SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
-                signIn();
+        signInButton.setOnClickListener(view -> signIn());
+        privacyPolicy.setOnClickListener( view -> {
+                String url = "";
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
-        });
+        );
     }
 
-    private void checkLogin() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
-        String UserType = sharedPreferences.getString("userType", "");
-        if(!UserType.equals(""))
-            moveToHome = true;
+    private void moveToHome() {
+        startActivity(new Intent(this, Home.class));
+        finish();
     }
 
     private void signIn() {
@@ -125,12 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.show();
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 try{
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-//                    Log.w(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                    account = task.getResult(ApiException.class);
                     firebaseAuthWithGoogle(account.getIdToken());
                 }catch(ApiException e){
                     progressDialog.cancel();
-//                    Log.w(TAG, "Google sign in failed", e);
                 }
         }
     }
@@ -138,77 +113,53 @@ public class MainActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            progressDialog.cancel();
-//                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
-                            if(account!=null) {
-                                progressDialog.setMessage("Verifying User");
-                                progressDialog.show();
-                                String email = account.getEmail();
-                                String salt1 = "";
-                                String salt2 = "";
-                                String hashedID = Hashing.sha256().hashString(salt1 + email + salt2, StandardCharsets.UTF_8).toString();
-                                StringRequest stringRequest = new StringRequest(Request.Method.GET, verifyUserID+"?id="+hashedID , new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        progressDialog.cancel();
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response);
-                                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                            String UserType = jsonObject1.getString("userType");
-                                            String DataLink = jsonObject1.getString("dataLink");
-                                            String FeedbackLink = jsonObject1.getString("feedbackLink");
-                                            String SourceCodeLink = jsonObject1.getString("sourceCodeLink");
-                                            String Note = jsonObject1.getString("note");
-                                            SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            editor.putString("userType", UserType);
-                                            editor.putString("dataLink", DataLink);
-                                            editor.putString("feedbackLink", FeedbackLink);
-                                            editor.putString("sourceCodeLink", SourceCodeLink);
-                                            editor.putString("note", Note);
-                                            editor.apply();
-                                            if(UserType.equals("-1"))
-                                                Toast.makeText(getApplicationContext(), "User outside of organization found", Toast.LENGTH_SHORT).show();
-                                            else
-                                                Toast.makeText(getApplicationContext(), "Credentials found", Toast.LENGTH_SHORT).show();
-                                            moveToHome();
-                                        } catch (JSONException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        progressDialog.cancel();
-                                        Toast.makeText(getApplicationContext(), "Error : No response", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext().getApplicationContext());
-                                requestQueue.add(stringRequest);
-                            }
-                        }else{
-                            progressDialog.cancel();
-//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()){
+                        progressDialog.cancel();
+                        account = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
+                        if(account!=null) {
+                            progressDialog.setMessage("Checking credentials");
+                            progressDialog.show();
+                            String email = account.getEmail();
+                            String salt1 = "";
+                            String salt2 = "";
+                            String hashedID = Hashing.sha256().hashString(salt1 + email + salt2, StandardCharsets.UTF_8).toString();
+                            StringRequest stringRequest = new StringRequest(Request.Method.GET, verifyUserID+"?id="+hashedID , response -> {
+                                progressDialog.cancel();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                    String userType = jsonObject1.getString("userType");
+                                    String dataLink = jsonObject1.getString("dataLink");
+                                    String feedbackLink = jsonObject1.getString("feedbackLink");
+                                    String note = jsonObject1.getString("note");
+                                    SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("userType", userType);
+                                    editor.putString("dataLink", dataLink);
+                                    editor.putString("feedbackLink", feedbackLink);
+                                    editor.putString("note", note);
+                                    editor.apply();
+                                    if(userType.equals("-1"))
+                                        Toast.makeText(getApplicationContext(), "User outside of organization found", Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(getApplicationContext(), "Credentials found", Toast.LENGTH_SHORT).show();
+                                    moveToHome();
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }, error -> {
+                                progressDialog.cancel();
+                                Toast.makeText(getApplicationContext(), "Error while checking credentials", Toast.LENGTH_SHORT).show();
+                            });
+                            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext().getApplicationContext());
+                            requestQueue.add(stringRequest);
                         }
+                    }else{
+                        progressDialog.cancel();
+                        Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    private void moveToHome() {
-        finish();
-        Intent intent = new Intent(getApplication().getApplicationContext(), Home.class);
-        startActivity(intent);
-    }
-    public void onBackPressed() {
-        this.moveTaskToBack(true);
     }
 
     private boolean isNetworkConnected() {
