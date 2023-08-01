@@ -2,6 +2,6 @@
 <resources>
     <string-array name="ctcRangeValueArray">
         <item>0</item>
-        <item>30</item>
+        <item>15</item>
     </string-array>
 </resources>

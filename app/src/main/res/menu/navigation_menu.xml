@@ -6,10 +6,6 @@
         android:icon="@drawable/list_icon_selector"
         android:id="@+id/listIcon"/>
 
-    <item android:title="Search"
-        android:icon="@drawable/search_icon_selector"
-        android:id="@+id/searchIcon"/>
-
     <item android:title="Stats"
         android:icon="@drawable/stats_icon_selector"
         android:id="@+id/statsIcon"/>
@@ -17,9 +13,5 @@
     <item android:title="Admin"
         android:icon="@drawable/admin_icon_selector"
         android:id="@+id/adminIcon"/>
-
-    <item android:title="Info"
-        android:icon="@drawable/info_icon_selector"
-        android:id="@+id/infoIcon"/>
 
 </menu>

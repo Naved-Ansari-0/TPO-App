@@ -94,15 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textName"
-            android:id="@+id/textPackages"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/textPackages"
-            android:layout_below="@+id/textName"
-            android:layout_marginStart="10dp"
-            android:id="@+id/textCompanies"/>
+            android:id="@+id/placementDetail"/>
 
     </RelativeLayout>
 

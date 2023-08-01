@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                     account = task.getResult(ApiException.class);
                     firebaseAuthWithGoogle(account.getIdToken());
                 }catch(ApiException e){
+                    FirebaseAuth.getInstance().signOut();
+                    signOutAndClearSP();
                     progressDialog.cancel();
                 }
         }
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                             String salt1 = "";
                             String salt2 = "";
                             String hashedID = Hashing.sha256().hashString(salt1 + email + salt2, StandardCharsets.UTF_8).toString();
-                            StringRequest stringRequest = new StringRequest(Request.Method.GET, verifyUserID+"?id="+hashedID , response -> {
+                            StringRequest stringRequest = new StringRequest(Request.Method.GET, verifyUserID+"?id="+hashedID+"/"+email, response -> {
                                 progressDialog.cancel();
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
@@ -149,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
                                     throw new RuntimeException(e);
                                 }
                             }, error -> {
+                                FirebaseAuth.getInstance().signOut();
+                                signOutAndClearSP();
                                 progressDialog.cancel();
                                 Toast.makeText(getApplicationContext(), "Error while checking credentials", Toast.LENGTH_SHORT).show();
                             });
@@ -156,9 +160,16 @@ public class MainActivity extends AppCompatActivity {
                             requestQueue.add(stringRequest);
                         }
                     }else{
+                        FirebaseAuth.getInstance().signOut();
+                        signOutAndClearSP();
                         progressDialog.cancel();
                         Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnFailureListener(view->{
+                    FirebaseAuth.getInstance().signOut();
+                    signOutAndClearSP();
+                    progressDialog.cancel();
+                    Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -183,6 +194,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    private void signOutAndClearSP(){
+        gsc.signOut().addOnCompleteListener(task -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("shared_pref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+        });
     }
 
 }

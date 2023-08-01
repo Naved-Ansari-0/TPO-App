@@ -11,8 +11,8 @@ android {
         applicationId "in.navedansari.tpoapp"
         minSdk 24
         targetSdk 33
-        versionCode 3
-        versionName "1.0"
+        versionCode 310723
+        versionName "1.31.07.23"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
