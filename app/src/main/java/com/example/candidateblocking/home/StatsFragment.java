@@ -398,8 +398,10 @@ public class StatsFragment extends Fragment {
             packagesSum += branchWisePackagesSum.get(ele.getKey());
             highestPackage = Math.max(highestPackage, branchWiseHighestPackage.get(ele.getKey()));
         }
-
-        float averagePackage = packagesSum/totalPackages;
+        
+        //to display average package upto two decimal places
+        float averagePackage = (float) ((packagesSum*1.0)/(totalPackages*1.0));
+    
         str += "\nTotal students placed : " + totalPlaced + "\n" +
                 "Total packages offered : " + totalPackages + "\n" +
                 "Highest package : " + highestPackage + "\n" +
