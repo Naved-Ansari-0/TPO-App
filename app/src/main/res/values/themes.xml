@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CandidateBlocking" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.TPOApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/blue</item>
@@ -13,11 +13,11 @@
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.CandidateBlocking.NoActionBar">
+    <style name="Theme.TPOApp.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.CandidateBlocking.AppBarOverlay"
+    <style name="Theme.TPOApp.AppBarOverlay"
         parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.CandidateBlocking.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.TPOApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class in.navedansari.tpoapp.models.PlacementRecord{ *; }
+-keep class in.navedansari.tpoapp.models.PlacedIn{ *; }
+-keep class in.navedansari.tpoapp.models.LoginRequest{ *; }
+-keep class in.navedansari.tpoapp.models.LoginResponse{ *; }
+-keep class in.navedansari.tpoapp.models.DataRequest{ *; }
+
+

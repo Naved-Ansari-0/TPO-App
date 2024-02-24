@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="record"
+            type="in.navedansari.tpoapp.models.PlacementRecord" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="5dp"
+        app:contentPadding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                style="@style/wrapWidthHeight"
+                android:textStyle="bold"
+                android:text="@{record.rollNo.toString()}"
+                android:id="@+id/rollNo"/>
+
+            <TextView
+                style="@style/wrapWidthHeight"
+                android:layout_toEndOf="@+id/rollNo"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold|italic"
+                android:text="@{record.branch}"
+                android:id="@+id/branch"/>
+
+            <TextView
+                style="@style/wrapWidthHeight"
+                android:layout_below="@+id/rollNo"
+                android:id="@+id/gender"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/rollNo"
+                android:id="@+id/genderIcon"/>
+
+            <TextView
+                style="@style/wrapWidthHeight"
+                android:layout_toEndOf="@+id/genderIcon"
+                android:layout_below="@+id/rollNo"
+                android:text="@{record.name}"
+                android:id="@+id/name"/>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/email_icon"
+                android:id="@+id/emailIcon"/>
+
+            <TextView
+                style="@style/wrapWidthHeight"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:textStyle="italic"
+                android:text="@{record.email}"
+                android:id="@+id/email"/>
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_below="@+id/email"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/phone_icon"
+                android:id="@+id/phoneIcon"/>
+
+            <TextView
+                style="@style/wrapWidthHeight"
+                android:layout_below="@+id/email"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:textStyle="italic"
+                android:text="@{record.phoneNo}"
+                android:id="@+id/phoneNo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name"
+                android:id="@+id/placedIn"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>
+

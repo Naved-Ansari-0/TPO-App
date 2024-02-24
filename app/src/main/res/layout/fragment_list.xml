@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/wrapWidthHeight"
+                    android:layout_marginVertical="10dp"
+                    android:text="Filter"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    style="@style/linearLayout2">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Year*"/>
+
+                    <EditText
+                        style="@style/outlineEditText"
+                        android:inputType="number"
+                        android:id="@+id/year"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout2">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Roll no"/>
+
+                    <EditText
+                        style="@style/outlineEditText"
+                        android:inputType="number"
+                        android:id="@+id/rollNo"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout2">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Name"/>
+
+                    <EditText
+                        style="@style/outlineEditText"
+                        android:inputType="textPersonName"
+                        android:id="@+id/name"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout1">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Gender"/>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/genderRadioGroup">
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="Male"
+                            android:id="@+id/maleRadioButton"/>
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="Female"
+                            android:id="@+id/femaleRadioButton"/>
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="Both"
+                            android:id="@+id/bothGenderRadioButton"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout1"
+                    android:id="@+id/courseLinearLayout">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Course"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="B.Tech"
+                        android:id="@+id/btechCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="M.Tech"
+                        android:id="@+id/mtechCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="MCA"
+                        android:id="@+id/mcaCheckBox"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout1"
+                    android:id="@+id/branchLinearLayout">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Branch"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="CE"
+                        android:id="@+id/ceCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="CSE"
+                        android:id="@+id/cseCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="EE"
+                        android:id="@+id/eeCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="EL"
+                        android:id="@+id/elCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="ME"
+                        android:id="@+id/meCheckBox"/>
+
+                    <CheckBox
+                        style="@style/wrapWidthHeight"
+                        android:text="IT"
+                        android:id="@+id/itCheckBox"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout2">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Company"/>
+
+                    <EditText
+                        style="@style/outlineEditText"
+                        android:singleLine="true"
+                        android:id="@+id/company"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout1">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:text="Drive Type"/>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/driveTypeRadioGroup">
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="On"
+                            android:id="@+id/onCampusRadioButton"/>
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="Off"
+                            android:id="@+id/offCampusRadioButton"/>
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="Pool"
+                            android:id="@+id/poolCampusRadioButton"/>
+
+                        <RadioButton
+                            style="@style/wrapWidthHeight"
+                            android:text="All"
+                            android:id="@+id/allCampusRadioButton"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/linearLayout2">
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:layout_marginEnd="10dp"
+                        android:text="Min CTC (lpa)"/>
+
+                    <EditText
+                        style="@style/outlineEditText"
+                        android:layout_width="60dp"
+                        android:layout_marginEnd="20dp"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/minCTC"/>
+
+                    <TextView
+                        style="@style/filterTextView"
+                        android:layout_marginEnd="10dp"
+                        android:text="Max CTC (lpa)"/>
+
+                    <EditText
+                        style="@style/outlineEditText"
+                        android:layout_width="60dp"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/maxCTC"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/button"
+                    android:text="Search"
+                    android:id="@+id/searchButton"/>
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="invisible"
+                    android:id="@+id/progressBar"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</layout>

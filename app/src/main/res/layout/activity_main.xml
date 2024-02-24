@@ -4,38 +4,4 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="5dp"
-        android:textAlignment="center"
-        android:layout_above="@+id/signInButton"
-        android:textSize="15sp"
-        android:text="To use this app, authenticate with google account" />
-
-    <com.google.android.gms.common.SignInButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/signInButton"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/privacyPolicy"
-        android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="20dp"
-        android:textAlignment="center"
-        android:text="Disclaimer : This is just a demo app, all the information that will be shown in this app is dummy data." />
-
-    <android.widget.Button
-        style="@style/textButtonBlue"
-        android:text="Privacy Policy"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:id="@+id/privacyPolicy"/>
-
 </RelativeLayout>
