@@ -2,6 +2,7 @@ package in.navedansari.tpoapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class LoginScreen extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
 
         binding.loginButton.setOnClickListener(view -> login());
+        binding.privacyPolicyButton.setOnClickListener(view -> openLink(GlobalData.Privacy_Policy_Link));
+        binding.portfolioButton.setOnClickListener(view -> openLink(GlobalData.Portfolio_Link));
     }
     private void login(){
         String email = binding.email.getText().toString().trim();
@@ -91,5 +94,8 @@ public class LoginScreen extends AppCompatActivity {
     private void navigateToHomeScreen(){
         startActivity(new Intent(this, HomeScreen.class));
         finishAffinity();
+    }
+    private void openLink(String url){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 }

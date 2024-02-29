@@ -24,5 +24,7 @@
 -keep class in.navedansari.tpoapp.models.LoginRequest{ *; }
 -keep class in.navedansari.tpoapp.models.LoginResponse{ *; }
 -keep class in.navedansari.tpoapp.models.DataRequest{ *; }
+-keep class in.navedansari.tpoapp.utils.ApiService{ *; }
+-keep class in.navedansari.tpoapp.GlobalData{ *; }
 
 

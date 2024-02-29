@@ -7,10 +7,25 @@ public class LoginRequest {
     private String email;
     @SerializedName("pwd")
     private String pwd;
+    @SerializedName("newpwd")
+    private String newpwd;
+
+    public String getNewpwd() {
+        return newpwd;
+    }
+
+    public void setNewpwd(String newpwd) {
+        this.newpwd = newpwd;
+    }
 
     public LoginRequest(String email, String pwd) {
         this.email = email;
         this.pwd = pwd;
+    }
+    public LoginRequest(String email, String pwd, String newpwd) {
+        this.email = email;
+        this.pwd = pwd;
+        this.newpwd = newpwd;
     }
 
     public String getEmail() {

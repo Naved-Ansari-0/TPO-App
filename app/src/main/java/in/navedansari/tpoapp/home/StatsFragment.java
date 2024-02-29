@@ -1,6 +1,8 @@
 package in.navedansari.tpoapp.home;
 
 import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import in.navedansari.tpoapp.GlobalData;
+import in.navedansari.tpoapp.LoginScreen;
 import in.navedansari.tpoapp.databinding.FragmentStatsBinding;
 import in.navedansari.tpoapp.models.DataRequest;
 import in.navedansari.tpoapp.models.PlacedIn;
@@ -108,6 +111,9 @@ public class StatsFragment extends Fragment {
                 }else{
                     try {
                         Toast.makeText(requireContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        if(response.code()==401){
+                            logout();
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -122,6 +128,14 @@ public class StatsFragment extends Fragment {
                 setControlsEnabled(true);
             }
         });
+    }
+    private void logout(){
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("shared_pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        startActivity(new Intent(requireContext(), LoginScreen.class));
+        requireActivity().finishAffinity();
     }
 
     private void setControlsEnabled(boolean enabled){

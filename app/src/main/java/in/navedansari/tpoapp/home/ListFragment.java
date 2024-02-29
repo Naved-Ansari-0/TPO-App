@@ -1,6 +1,8 @@
 package in.navedansari.tpoapp.home;
 
 import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import in.navedansari.tpoapp.GlobalData;
+import in.navedansari.tpoapp.HomeScreen;
+import in.navedansari.tpoapp.LoginScreen;
 import in.navedansari.tpoapp.databinding.FragmentListBinding;
 import in.navedansari.tpoapp.models.DataRequest;
 import in.navedansari.tpoapp.models.PlacementRecord;
@@ -198,6 +202,9 @@ public class ListFragment extends Fragment {
                 }else{
                     try {
                         Toast.makeText(requireContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        if(response.code()==401){
+                            logout();
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -213,6 +220,14 @@ public class ListFragment extends Fragment {
             }
         });
     }
+    private void logout(){
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("shared_pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        startActivity(new Intent(requireContext(), LoginScreen.class));
+        requireActivity().finishAffinity();
+    }
 
     private void navigateToPlacementRecordsScreen(){
         Intent intent = new Intent(requireContext(), PlacementRecordsScreen.class);
@@ -220,4 +235,6 @@ public class ListFragment extends Fragment {
         intent.putExtra("placementRecords", placementRecordsArray);
         startActivity(intent);
     }
+
+
 }
